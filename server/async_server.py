@@ -12,6 +12,7 @@ async def echo_handler(reader, writer):
         writer.write(b'reply: ' + data)
         await writer.drain()
     print("conn closed")
+    writer.close()
     await writer.wait_closed()
 
 if __name__ == "__main__":

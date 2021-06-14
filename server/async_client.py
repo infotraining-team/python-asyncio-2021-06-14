@@ -1,13 +1,27 @@
 import asyncio
 import time
 
-async def client(address):
+n = 0
+
+async def monitor():
+    global n
+    while True:
+        await asyncio.sleep(1)
+        print(f"{n} req/sec")
+        n = 0
+
+async def client(address, num):
+    global n
     reader, writer = await asyncio.open_connection(*address)
     while True:
-        writer.write(b"Hello from client")
+        writer.write(b'1000')
         await writer.drain()
         resp = await reader.read(100000)
-        print(b'got: ' + resp)
-        time.sleep(0.5)
+        #await asyncio.sleep(0.5)
+        #print(resp)
+        n += 1
 
-asyncio.run(client(("localhost", 25000)))
+async def main():
+    await asyncio.gather(*[client(("localhost", 25000), 20) for i in range(8)], monitor())
+
+asyncio.run(main())

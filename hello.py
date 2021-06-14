@@ -1,7 +1,12 @@
 import asyncio
 
-async def runme():
+async def hello(param):
+    print("welcome", param)
     await asyncio.sleep(1)
-    print("Hello world")
+    return 42
 
-asyncio.run(runme())
+#print(type(hello))
+#print(type(hello("guest")))
+
+res = asyncio.run(hello("guest"))
+print(res)

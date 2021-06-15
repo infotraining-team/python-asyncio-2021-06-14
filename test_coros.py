@@ -11,3 +11,4 @@ async def test_coro_add():
     with mock.patch('asyncio.sleep', mock.AsyncMock(return_value=None)):
         res = await coro_add(3, 4)
         assert res == 7
+

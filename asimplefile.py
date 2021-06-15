@@ -15,6 +15,13 @@ class asimplefile:
     async def __aexit__(self, exc, ext, tb):
         await asyncio.to_thread(self.handler.close)
 
+    async def __aiter__(self):
+        while True:
+            line = await asyncio.to_thread(self.handler.readline)
+            if line:
+                yield line
+            else:
+                break
 
 # target
 async def main():
@@ -22,9 +29,9 @@ async def main():
         content = await f.read()
         print(content)
 
-    # async with asimplefile("hello.py") as f:
-    #     async for line in f:
-    #         print(line)
+    async with asimplefile("hello.py") as f:
+        async for line in f:
+            print(line)
 
     # with open("hello.py") as f:
     #     content = f.read()
